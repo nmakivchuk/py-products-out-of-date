@@ -32,8 +32,8 @@ def products() -> list[dict]:
         (datetime.date(2022, 2, 11), ["salmon", "chicken", "duck"])
     ]
 )
-def test_outdated_products(products: list,
-        mock_today: datetime.date, expected: list
+def test_outdated_products(
+        products: list, mock_today: datetime.date, expected: list
 ) -> None:
     with patch("app.main.datetime.date") as mock_date:
         mock_date.today.return_value = mock_today
