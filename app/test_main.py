@@ -26,17 +26,15 @@ def products() -> list[dict]:
 
 
 @pytest.mark.parametrize(
-    "mocked_today, expected",
-    [
+    ("mock_today", "expected"), [
         (datetime.date(2022, 2, 2), ["duck"]),
         (datetime.date(2022, 1, 31), []),
         (datetime.date(2022, 2, 11), ["salmon", "chicken", "duck"])
     ]
 )
-@patch("app.main.datetime.date")
-def test_outdated_products(
-        mock_date: patch, mocked_today: datetime.date,
-        expected: list[str], products: list[dict]) -> None:
-    mock_date.today.return_value = mocked_today
-    mock_date.side_effect = lambda *args, **kw: datetime.date(*args, **kw)
-    assert outdated_products(products) == expected
+def test_outdated_products(products: list,
+        mock_today: datetime.date, expected: list
+) -> None:
+    with patch("app.main.datetime.date") as mock_date:
+        mock_date.today.return_value = mock_today
+        assert outdated_products(products) == expected
